@@ -28,7 +28,7 @@
 
 
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg: #FFF8E7;
@@ -2132,7 +2132,173 @@
             }
         }
 
-        </style>
+        
+        /* ===== CODE BLOCK STYLING ===== */
+        .code-wrapper {
+            margin: 10px 0;
+            border: 3px solid var(--black);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 4px 4px 0 var(--black);
+            background: #1e1e1e;
+            max-width: 100%;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            background: var(--black);
+            border-bottom: 3px solid var(--black);
+        }
+
+        .code-lang {
+            font-weight: 800;
+            font-size: 0.75rem;
+            color: var(--yellow);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .code-actions {
+            display: flex;
+            gap: 6px;
+        }
+
+        .code-btn {
+            background: var(--yellow);
+            color: var(--black);
+            border: 2px solid var(--black);
+            border-radius: 6px;
+            padding: 4px 8px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 800;
+            font-size: 0.7rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.2s;
+            box-shadow: 2px 2px 0 var(--black);
+        }
+
+        .code-btn:hover {
+            transform: translate(-1px, -1px);
+            box-shadow: 3px 3px 0 var(--black);
+        }
+
+        .code-btn:active {
+            transform: translate(0, 0);
+            box-shadow: 1px 1px 0 var(--black);
+        }
+
+        .code-pre {
+            margin: 0;
+            padding: 12px 16px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            background: #1e1e1e;
+            max-height: 400px;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+        }
+
+        .code-pre iframe {
+            width: 100%;
+            height: 300px;
+            border: none;
+            background: white;
+            border-radius: 8px;
+            display: block;
+        }
+
+        .code-pre::-webkit-scrollbar {
+            height: 6px;
+            width: 6px;
+        }
+
+        .code-pre::-webkit-scrollbar-track {
+            background: #2d2d2d;
+            border-left: none;
+        }
+
+        .code-pre::-webkit-scrollbar-thumb {
+            background: var(--yellow);
+            border-radius: 3px;
+        }
+
+        .code-content {
+            font-family: 'Fira Code', 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.8rem;
+            line-height: 1.6;
+            color: #d4d4d4;
+            white-space: pre;
+            word-wrap: normal;
+            display: block;
+        }
+
+        .code-preview-frame {
+            margin-top: 8px;
+            border: 3px solid var(--black);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 4px 4px 0 var(--black);
+        }
+
+        /* Dark mode code blocks */
+        [data-theme="dark"] .code-wrapper {
+            border-color: #111111;
+            box-shadow: 4px 4px 0 #111111;
+        }
+
+        [data-theme="dark"] .code-header {
+            background: #111111;
+            border-bottom-color: #111111;
+        }
+
+        [data-theme="dark"] .code-btn {
+            border-color: #111111;
+            box-shadow: 2px 2px 0 #111111;
+        }
+
+        [data-theme="dark"] .code-preview-frame {
+            border-color: #111111;
+            box-shadow: 4px 4px 0 #111111;
+        }
+
+        /* Mobile code blocks */
+        @media (max-width: 480px) {
+            .code-wrapper {
+                border-radius: 8px;
+                box-shadow: 3px 3px 0 var(--black);
+            }
+            .code-pre {
+                padding: 8px 10px;
+                max-height: 300px;
+            }
+            .code-content {
+                font-size: 0.7rem;
+                line-height: 1.5;
+            }
+            .code-header {
+                padding: 6px 10px;
+            }
+            .code-btn {
+                padding: 3px 6px;
+                font-size: 0.65rem;
+            }
+            .code-actions {
+                gap: 4px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .code-content {
+                font-size: 0.65rem;
+            }
+        }
+</style>
 
     <link rel="preconnect" href="https://token-plan-sgp.xiaomimimo.com">
     <link rel="preconnect" href="https://api.ikyyxd.my.id">
@@ -2142,6 +2308,7 @@
     <link rel="preconnect" href="https://cdn.phototourl.com">
     <link rel="dns-prefetch" href="https://token-plan-sgp.xiaomimimo.com">
     <link rel="dns-prefetch" href="https://api.ikyyxd.my.id">
+<base target="_blank">
 </head>
 <body>
     <!-- ===== LOADING SCREEN ===== -->
@@ -2379,33 +2546,70 @@ function appendMessage(text, sender) {
             div.dataset.id = 'msg-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5);
 
             if (sender === 'ai' || sender === 'ai error') {
-                if (/<[a-z][\s\S]*>/i.test(text)) {
-                    div.innerHTML = text;
-                } else {
-                    div.innerHTML = parseMarkdown(text);
-                }
+                // SELALU lewat parseMarkdown — tidak ada innerHTML langsung dari teks AI
+                div.innerHTML = parseMarkdown(text);
+
+                // Check if response seems truncated (ends mid-code without closing)
+                const codeBlocks = div.querySelectorAll('.code-wrapper');
+                codeBlocks.forEach(block => {
+                    const codeEl = block.querySelector('.code-content');
+                    if (codeEl) {
+                        const code = codeEl.textContent;
+                        // Check for common truncation signs
+                        if (code.trim().endsWith('...') || code.trim().endsWith('// ...') || 
+                            code.trim().endsWith('/* ...') || code.trim().endsWith('<!-- ...')) {
+                            // Add a warning badge
+                            const warning = document.createElement('div');
+                            warning.style.cssText = 'margin-top:8px;padding:6px 10px;background:#FECACA;border:2px solid #DC2626;border-radius:8px;font-size:0.75rem;font-weight:800;color:#DC2626;';
+                            warning.innerHTML = '⚠️ Kode mungkin terpotong. Coba tanya "Lanjutkan kode di atas"';
+                            block.appendChild(warning);
+                        }
+                    }
+                });
             } else {
                 div.textContent = text;
             }
 
-            // FIX: Batch DOM read/write to prevent layout thrashing
             const fragment = document.createDocumentFragment();
             fragment.appendChild(div);
             chatMessages.appendChild(fragment);
-
-            // FIX: Smooth scroll to bottom
             chatMessages.scrollTo({ top: chatMessages.scrollHeight, behavior: 'smooth' });
             return div;
         }
 
         function parseMarkdown(text) {
+            // STEP 1: Ekstrak code blocks dulu, simpan sebagai placeholder
+            // Mencegah konten di dalam ``` ikut di-escape atau di-parse markdown
+            const codeBlocks = [];
+            text = text.replace(/```([a-zA-Z0-9+\-#]*)\s*\n([\s\S]*?)\n```/g, function(_, lang, code) {
+                const idx = codeBlocks.length;
+                const langLabel = lang ? lang.trim() : '';
+                const rawCode = code;
+                const escapedCode = rawCode
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;');
+
+                const blockId = 'codeblock-' + Date.now() + '-' + idx;
+                const isHtml = langLabel.toLowerCase() === 'html';
+
+                // Encode rawCode untuk tombol download & preview
+                let encoded = '';
+                try { encoded = btoa(unescape(encodeURIComponent(rawCode))); } catch(e) { encoded = btoa(rawCode); }
+
+                const previewBtn = isHtml
+                    ? `<button class="code-btn" onclick="previewCode('${blockId}')" title="Preview HTML"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>Preview</button>`
+                    : '';
+
+                codeBlocks[idx] = `<div class="code-wrapper" id="${blockId}" data-raw="${encoded}"><div class="code-header"><span class="code-lang">${langLabel || 'code'}</span><div class="code-actions"><button class="code-btn" onclick="copyCode('${blockId}')" title="Salin kode"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>Salin</button><button class="code-btn" onclick="downloadCode('${blockId}','${langLabel}')" title="Download kode"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>Download</button>${previewBtn}</div></div><pre class="code-pre"><code class="code-content">${escapedCode}</code></pre></div>`;
+                return `\x00CODE${idx}\x00`;
+            });
+
+            // STEP 2: Escape HTML dari teks biasa (di luar code block)
             let html = text
                 .replace(/&/g, '&amp;')
                 .replace(/</g, '&lt;')
                 .replace(/>/g, '&gt;');
-
-            // Code blocks
-            html = html.replace(/```([\s\S]*?)```/g, '<pre style="background:#1e1e1e;color:#d4d4d4;padding:12px;border-radius:8px;overflow-x:auto;font-family:monospace;font-size:0.85rem;margin:8px 0;border:2px solid var(--black);"><code>$1</code></pre>');
 
             // Inline code
             html = html.replace(/`([^`]+)`/g, '<code style="background:rgba(0,0,0,0.08);padding:2px 6px;border-radius:4px;font-family:monospace;font-size:0.9rem;border:1px solid var(--black);">$1</code>');
@@ -2425,10 +2629,10 @@ function appendMessage(text, sender) {
             html = html.replace(/^# (.*$)/gim, '<h1 style="font-size:1.3rem;font-weight:900;margin:12px 0;">$1</h1>');
 
             // Links
-            html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" style="color:var(--black);text-decoration:underline;font-weight:800;background:var(--cyan);padding:0 4px;border-radius:3px;">$1</a>');
+            html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" style="color:var(--black);text-decoration:underline;font-weight:800;background:var(--cyan);padding:0 4px;border-radius:3px;">$1</a>');
 
             // Blockquote
-            html = html.replace(/^&gt; (.*$)/gim, '<blockquote style="border-left:4px solid var(--black);padding-left:12px;margin:8px 0;font-style:italic;opacity:0.8;">$1</blockquote>');
+            html = html.replace(/^&amp;gt; (.*$)/gim, '<blockquote style="border-left:4px solid var(--black);padding-left:12px;margin:8px 0;font-style:italic;opacity:0.8;">$1</blockquote>');
 
             // Unordered list
             html = html.replace(/^\- (.*$)/gim, '<li style="margin-left:16px;list-style-type:disc;">$1</li>');
@@ -2439,7 +2643,138 @@ function appendMessage(text, sender) {
             // Line breaks
             html = html.replace(/\n/g, '<br>');
 
+            // STEP 3: Kembalikan code blocks
+            html = html.replace(/\x00CODE(\d+)\x00/g, function(_, i) { return codeBlocks[parseInt(i)]; });
+
+            // STEP 4: Auto-detect code without markdown formatting
+            if (codeBlocks.length === 0) {
+                const codePatterns = [
+                    /<(html|head|body|div|span|script|style|meta|title|link)[^>]*>/i,
+                    /function\s+\w+\s*\(/,
+                    /const\s+\w+\s*=\s*\(/,
+                    /\.\w+\s*\{\s*[^}]+\}/,
+                    /import\s+.*?from\s+['"]/,
+                    /export\s+(default\s+)?/,
+                    /\{\s*\n\s*[\w-]+\s*:/,
+                    /\[\s*\n\s*['"']\w+/,
+                    /<!DOCTYPE\s+html>/i,
+                    /<\?php/,
+                    /SELECT\s+.*?FROM\s+/i,
+                ];
+                const hasCodePattern = codePatterns.some(pattern => pattern.test(html));
+                if (hasCodePattern && html.includes('\n')) {
+                    const blockId = 'codeblock-' + Date.now() + '-auto';
+                    const rawCode = html.replace(/<br>/g, '\n').replace(/<[^>]+>/g, '');
+                    let encoded = '';
+                    try { encoded = btoa(unescape(encodeURIComponent(rawCode))); } catch(e) { encoded = btoa(rawCode); }
+                    const autoBlock = `<div class="code-wrapper" id="${blockId}" data-raw="${encoded}"><div class="code-header"><span class="code-lang">auto</span><div class="code-actions"><button class="code-btn" onclick="copyCode('${blockId}')" title="Salin kode"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>Salin</button><button class="code-btn" onclick="downloadCode('${blockId}','auto')" title="Download kode"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>Download</button></div></div><pre class="code-pre"><code class="code-content">${rawCode.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</code></pre></div>`;
+                    return autoBlock;
+                }
+            }
+
             return html;
+        }
+
+        // ===== CODE BLOCK ACTIONS =====
+        function copyCode(blockId) {
+            const block = document.getElementById(blockId);
+            if (!block) return;
+            let rawCode = '';
+            try {
+                const encoded = block.dataset.raw;
+                rawCode = decodeURIComponent(escape(atob(encoded)));
+            } catch(e) { 
+                rawCode = block.querySelector('.code-content')?.textContent || ''; 
+            }
+
+            navigator.clipboard.writeText(rawCode).then(() => {
+                showToast('✅ Kode disalin');
+            }).catch(() => {
+                const ta = document.createElement('textarea');
+                ta.value = rawCode;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+                showToast('✅ Kode disalin');
+            });
+        }
+
+        function downloadCode(blockId, lang) {
+            const block = document.getElementById(blockId);
+            if (!block) return;
+            let rawCode = '';
+            try {
+                const encoded = block.dataset.raw;
+                rawCode = decodeURIComponent(escape(atob(encoded)));
+            } catch(e) { 
+                rawCode = block.querySelector('.code-content')?.textContent || ''; 
+            }
+            const extMap = {
+                'html':'html','css':'css','js':'js','javascript':'js',
+                'python':'py','py':'py','java':'java','kotlin':'kt',
+                'ts':'ts','typescript':'ts','json':'json','xml':'xml',
+                'php':'php','dart':'dart','swift':'swift','cpp':'cpp',
+                'c':'c','cs':'cs','go':'go','rust':'rs','rb':'rb',
+                'shell':'sh','bash':'sh','sql':'sql'
+            };
+            const ext = extMap[lang ? lang.toLowerCase() : ''] || 'txt';
+            const blob = new Blob([rawCode], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `code.${ext}`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast('⬇️ Kode didownload');
+        }
+
+        function previewCode(blockId) {
+            const block = document.getElementById(blockId);
+            if (!block) return;
+
+            const preEl = block.querySelector('.code-pre');
+            const isPreview = preEl.dataset.mode === 'preview';
+
+            // Get raw code from the wrapper's data-raw attribute (always available)
+            let rawCode = '';
+            try {
+                const encoded = block.dataset.raw;
+                rawCode = decodeURIComponent(escape(atob(encoded)));
+            } catch(e) { 
+                rawCode = block.querySelector('.code-content')?.textContent || ''; 
+            }
+
+            // Find the preview button by its onclick attribute
+            const previewBtn = block.querySelector('.code-btn[onclick*="previewCode"]');
+
+            if (isPreview) {
+                // Switch back to code view
+                preEl.dataset.mode = 'code';
+                // Escape the raw code for display
+                const escapedCode = rawCode.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                preEl.innerHTML = `<code class="code-content">${escapedCode}</code>`;
+                // Update button back to Preview
+                if (previewBtn) {
+                    previewBtn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>Preview`;
+                    previewBtn.title = 'Preview HTML';
+                }
+                showToast('💻 Kode view');
+            } else {
+                // Switch to preview mode
+                preEl.dataset.mode = 'preview';
+                preEl.innerHTML = `<iframe style="width:100%;height:300px;border:none;background:white;border-radius:8px;" sandbox="allow-scripts allow-same-origin"></iframe>`;
+                const iframe = preEl.querySelector('iframe');
+                if (iframe) iframe.srcdoc = rawCode;
+                // Update button to Kode
+                if (previewBtn) {
+                    previewBtn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>Kode`;
+                    previewBtn.title = 'Lihat Kode';
+                }
+                showToast('👁️ Preview aktif');
+            }
         }
 
         // ===== API CONFIG =====
@@ -2448,7 +2783,7 @@ function appendMessage(text, sender) {
         let currentModel = 'mimo-v2.5';
         let isLoading = false;
         let messageHistory = [
-            { role: 'system', content: 'Kamu adalah HAi, asisten AI yang ramah, helpful, dan berbahasa Indonesia. Jawab dengan singkat padat dan jelas. Gunakan format markdown jika perlu.' }
+            { role: 'system', content: 'Kamu adalah HAi, asisten AI berbahasa Indonesia. Jawab lengkap. Kode harus LENGKAP tanpa dipotong.' }
         ];
 
         const chatMessages = document.getElementById('chatMessages');
@@ -2642,7 +2977,7 @@ function appendMessage(text, sender) {
 
         function clearChat() {
             messageHistory = [
-                { role: 'system', content: 'Kamu adalah HAi, asisten AI yang ramah, helpful, dan berbahasa Indonesia. Jawab dengan singkat padat dan jelas. Gunakan format markdown jika perlu.' }
+                { role: 'system', content: 'Kamu adalah HAi, asisten AI berbahasa Indonesia. Jawab lengkap. Kode harus LENGKAP tanpa dipotong.' }
             ];
             chatMessages.innerHTML = `<div class="message ai">👋 Chat dihapus. Ada yang bisa saya bantu?</div>`;
             clearAttachments();
@@ -2873,7 +3208,7 @@ function appendMessage(text, sender) {
             if (!confirm('Yakin mau hapus semua chat? Ini gak bisa di-undo lho!')) return;
 
             messageHistory = [
-                { role: 'system', content: 'Kamu adalah HAi, asisten AI yang ramah, helpful, dan berbahasa Indonesia. Jawab dengan singkat padat dan jelas. Gunakan format markdown jika perlu.' }
+                { role: 'system', content: 'Kamu adalah HAi, asisten AI berbahasa Indonesia. Jawab lengkap. Kode harus LENGKAP tanpa dipotong.' }
             ];
             chatMessages.innerHTML = `<div class="message ai">👋 Chat dihapus. Ada yang bisa saya bantu?</div>`;
             imageHistory = [];
@@ -2964,6 +3299,12 @@ function appendMessage(text, sender) {
 
                 if (currentModel === 'mimo-v2.5' || currentModel === 'mimo-v2.5-pro') {
                     messageHistory.push({ role: 'user', content: userContent });
+
+                    // Trim history to last 20 messages to save tokens (keep system prompt)
+                    const trimmedHistory = messageHistory.length > 21 
+                        ? [messageHistory[0], ...messageHistory.slice(-20)]
+                        : messageHistory;
+
                     const response = await fetch(API_URL, {
                         method: 'POST',
                         headers: {
@@ -2972,9 +3313,9 @@ function appendMessage(text, sender) {
                         },
                         body: JSON.stringify({
                             model: currentModel,
-                            messages: messageHistory,
+                            messages: trimmedHistory,
                             temperature: 0.7,
-                            max_tokens: 2048
+                            max_tokens: 4096
                         })
                     });
 
