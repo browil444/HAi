@@ -251,7 +251,7 @@
         }
 
         .message {
-            max-width: min(85%, 600px);
+            max-width: min(95%, 800px);
             padding: clamp(10px, 3vw, 14px) clamp(12px, 3vw, 18px);
             border: 3px solid var(--black);
             border-radius: 14px;
@@ -2199,7 +2199,7 @@
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
             background: #1e1e1e;
-            max-height: 400px;
+            max-height: 600px;
             overflow-y: auto;
             transition: all 0.3s ease;
         }
@@ -2581,7 +2581,7 @@ function appendMessage(text, sender) {
             // STEP 1: Ekstrak code blocks dulu, simpan sebagai placeholder
             // Mencegah konten di dalam ``` ikut di-escape atau di-parse markdown
             const codeBlocks = [];
-            text = text.replace(/```([a-zA-Z0-9+\-#]*)\s*\n([\s\S]*?)\n```/g, function(_, lang, code) {
+            text = text.replace(/```([a-zA-Z0-9+\-#]*)\s*\n([\s\S]*?)\s*```/g, function(_, lang, code) {
                 const idx = codeBlocks.length;
                 const langLabel = lang ? lang.trim() : '';
                 const rawCode = code;
@@ -2645,32 +2645,6 @@ function appendMessage(text, sender) {
 
             // STEP 3: Kembalikan code blocks
             html = html.replace(/\x00CODE(\d+)\x00/g, function(_, i) { return codeBlocks[parseInt(i)]; });
-
-            // STEP 4: Auto-detect code without markdown formatting
-            if (codeBlocks.length === 0) {
-                const codePatterns = [
-                    /<(html|head|body|div|span|script|style|meta|title|link)[^>]*>/i,
-                    /function\s+\w+\s*\(/,
-                    /const\s+\w+\s*=\s*\(/,
-                    /\.\w+\s*\{\s*[^}]+\}/,
-                    /import\s+.*?from\s+['"]/,
-                    /export\s+(default\s+)?/,
-                    /\{\s*\n\s*[\w-]+\s*:/,
-                    /\[\s*\n\s*['"']\w+/,
-                    /<!DOCTYPE\s+html>/i,
-                    /<\?php/,
-                    /SELECT\s+.*?FROM\s+/i,
-                ];
-                const hasCodePattern = codePatterns.some(pattern => pattern.test(html));
-                if (hasCodePattern && html.includes('\n')) {
-                    const blockId = 'codeblock-' + Date.now() + '-auto';
-                    const rawCode = html.replace(/<br>/g, '\n').replace(/<[^>]+>/g, '');
-                    let encoded = '';
-                    try { encoded = btoa(unescape(encodeURIComponent(rawCode))); } catch(e) { encoded = btoa(rawCode); }
-                    const autoBlock = `<div class="code-wrapper" id="${blockId}" data-raw="${encoded}"><div class="code-header"><span class="code-lang">auto</span><div class="code-actions"><button class="code-btn" onclick="copyCode('${blockId}')" title="Salin kode"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>Salin</button><button class="code-btn" onclick="downloadCode('${blockId}','auto')" title="Download kode"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>Download</button></div></div><pre class="code-pre"><code class="code-content">${rawCode.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</code></pre></div>`;
-                    return autoBlock;
-                }
-            }
 
             return html;
         }
@@ -2783,7 +2757,7 @@ function appendMessage(text, sender) {
         let currentModel = 'mimo-v2.5';
         let isLoading = false;
         let messageHistory = [
-            { role: 'system', content: 'Kamu adalah HAi, asisten AI berbahasa Indonesia. Jawab lengkap. Kode harus LENGKAP tanpa dipotong.' }
+            { role: 'system', content: 'Kamu adalah HAi, asisten AI yang ramah, helpful, dan berbahasa Indonesia. Jawab dengan singkat padat dan jelas. Gunakan format markdown jika perlu.' }
         ];
 
         const chatMessages = document.getElementById('chatMessages');
@@ -2977,7 +2951,7 @@ function appendMessage(text, sender) {
 
         function clearChat() {
             messageHistory = [
-                { role: 'system', content: 'Kamu adalah HAi, asisten AI berbahasa Indonesia. Jawab lengkap. Kode harus LENGKAP tanpa dipotong.' }
+                { role: 'system', content: 'Kamu adalah HAi, asisten AI yang ramah, helpful, dan berbahasa Indonesia. Jawab dengan singkat padat dan jelas. Gunakan format markdown jika perlu.' }
             ];
             chatMessages.innerHTML = `<div class="message ai">👋 Chat dihapus. Ada yang bisa saya bantu?</div>`;
             clearAttachments();
@@ -3208,7 +3182,7 @@ function appendMessage(text, sender) {
             if (!confirm('Yakin mau hapus semua chat? Ini gak bisa di-undo lho!')) return;
 
             messageHistory = [
-                { role: 'system', content: 'Kamu adalah HAi, asisten AI berbahasa Indonesia. Jawab lengkap. Kode harus LENGKAP tanpa dipotong.' }
+                { role: 'system', content: 'Kamu adalah HAi, asisten AI yang ramah, helpful, dan berbahasa Indonesia. Jawab dengan singkat padat dan jelas. Gunakan format markdown jika perlu.' }
             ];
             chatMessages.innerHTML = `<div class="message ai">👋 Chat dihapus. Ada yang bisa saya bantu?</div>`;
             imageHistory = [];
